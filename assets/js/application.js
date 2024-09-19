@@ -373,7 +373,7 @@ var Search = {
       },
       processResult: function (result) {
         result.url = result.url.replace(/\.html$/, "")
-	return result
+        return result
       },
     });
 
