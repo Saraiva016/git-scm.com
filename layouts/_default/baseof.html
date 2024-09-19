@@ -48,7 +48,7 @@
   <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>{{ .Page.Title | default "Git" }}</title>
+  <title>{{ .Page.Title | default "Git" }}{{ if (isset .Params "subtitle") }} - {{ .Params.subtitle }}{{ end }}</title>
 
   <link href="{{ relURL "favicon.ico" }}" rel='shortcut icon' type='image/x-icon'>
 
@@ -148,7 +148,7 @@
             </div>
           {{ else if eq $section "about" }}
             <div id="main">
-              <h1>About</h1>
+              <h1 data-pagefind-meta="title">About{{ if (isset .Params "subtitle") }} - {{ .Params.subtitle }}{{ end }}</h1>
 
               <ol id="about-nav">
                 {{ $abouts := sort (where .Site.RegularPages "Params.section" "about") "Params.order"  }}
