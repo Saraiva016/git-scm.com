@@ -16,6 +16,7 @@ const mimeTypes = {
      "js": "text/javascript",
      "css": "text/css",
      "json": "application/json",
+     'pf_filter': 'application/gzip',
      'pf_fragment': 'application/gzip',
      'pf_index': 'application/gzip',
      'pf_meta': 'application/gzip',
