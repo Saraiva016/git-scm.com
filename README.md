@@ -30,26 +30,39 @@ It is highly recommended to clone this repository using [`scalar`](https://git-s
   - external/docs/
   You will want to avoid editing these directly, as they contain pages that are pre-rendered via GitHub workflows, sourcing content from other repositories.
 
-To render the site locally, you'll need [Hugo](https://gohugo.io/)'s **extended** version that is v0.128.0 or above. On Windows, we recommend using the Windows Subsystem for Linux (WSL).
-You can verify the version:
+To render the site locally, you'll need [Hugo](https://gohugo.io/)'s **extended** version v0.128.0 or later. On Windows, we recommend using the Windows Subsystem for Linux (WSL) because some file names contain colons which prevent them from being checked out on Windows file systems.
+
+You can verify the Hugo version like this:
 
     $ hugo version
     hugo v0.128.0+extended linux/amd64 BuildDate=unknown
 
 You can serve the site locally via:
 
-    $ hugo serve -w
+    $ node script/serve-public.js
 
-The site should be running on http://127.0.0.1:1313. Note that it may be advisable to do this in a sparse checkout that excludes large parts of `content/`, to speed up the rendering time.
+The site should be running on http://127.0.0.1:5000.
+
+If you want to serve the site via Hugo's built-in mechanism, you will need to turn off ["ugly URLs"](https://gohugo.io/content-management/urls/#appearance), by running this command, which will serve the site via http://127.0.0.1:1313:
+
+    $ HUGO_UGLYURLS=false hugo serve -w
+
+Side note: What _are_ "ugly URLs"? Hugo, by default, generates "pretty" URLs like https://git-scm.com/about/ (note the trailing slash) instead of what it calls "ugly" URLs like https://git-scm.com/about.html. However, since GitHub Pages auto-resolves "even prettier" URLs like https://git-scm.com/about by appending `.html` first, we _want_ the "ugly" URLs to be used here. The `serve-public.js` script emulates GitHub Pages' behavior, while `hugo serve` does not.
+
+Pro-Tip: Do this in a sparse checkout that excludes large parts of `content/`, to speed up the rendering time.
 
 To test the site locally _with_ the search enabled, run this instead:
 
     $ hugo
+    $ npx -y pagefind --site public
+    $ node script/serve-public.js
+
+You can also use Pagefind's built-in server (which will be running on http://127.0.0.1:1414), but again, you have to turn off "ugly URLs":
+
+    $ HUGO_UGLYURLS=false hugo
     $ npx -y pagefind --site public --serve
 
-That site should be running on http://127.0.0.1:1414
-
-Note that this will take about 7 times as long, and the site will not be re-rendered and live-reloaded in the browser (unlike with `hugo serve -w`).
+Note that running Pagefind will make the process about 7 times slower, and the site will not be re-rendered and live-reloaded in the browser when you change files in `content/` (unlike with `hugo serve -w`).
 
 ## Update manual pages
 
